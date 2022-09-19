@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+{% block title %}Top Wear{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <div class="row ">
+      <div class="col-sm-2">
+        <div class="list-group">
+          <a class="list-group-item list-group-item-action active" href="{% url 'topwear' %}">All</a>
+          <a class="list-group-item list-group-item-action" href="{% url 'topweardata' 'below' %}">Below 400</a>
+          <a class="list-group-item list-group-item-action" href="{% url 'topweardata' 'above' %}">Above 400</a> 
+        </div>
+      </div>
+      <div class="offset-1 col-sm-9">
+        <div class="row">
+          {% for i in topwear %}
+           <div class="col-sm-4 text-center mb-4">
+            <a href="{% url 'productdetail' i.id %}" class="">
+             <div class="item">
+              <img src="{{i.image.url}}" alt="" height="300" class="">
+              <div class="fw-bold">{{i.title}}</div>
+              <div class="fw-bold">Rs. {{i.price}}</div>
+             </div>
+            </a>
+           </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock main-content %}

@@ -1,0 +1,133 @@
+{% extends 'shop/base.html' %}
+{% block title %}Home{% endblock title %}
+{% load static %}
+
+{% block banner %}
+<div id="carouselbanner" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselbanner" data-slide-to="0" class="active"></li>
+    {% for i in range %}
+    <li data-target="#carouselbanner" data-slide-to="{{i}}"></li>
+    {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{{first_ban.image.url}}" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      {% for i in banner|slice:"1:" %}
+      <img src="{{i.image.url}}" class="d-block w-100" alt="...">
+      {% if not forloop.last %}
+    </div>
+    <div class="carousel-item">
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-target="#carouselbanner" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-target="#carouselbanner" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </button>
+</div>
+{% endblock banner %}
+
+{% block livesale %}
+<div class="container">
+  <div class="d-block bg-danger text-center p-3 text-white border-bottom shadow">
+    <h1>SALE IS LIVE NOW</h1><br>
+    <span>5% Instant Discount on Axis Bank Credit and Debit Card</span><br>
+    <small class="fw-lighter">Term and Condition Applied (For details visit Bank's official Website)</small>
+  </div>
+</div><br>
+{% endblock livesale %}
+
+{% block main-content %}
+<h1>Top Deals of the Day</h1>
+<div class="swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide card">
+      {% for i in product %}
+      <div class="card-body">
+        <a href="{% url 'productdetail' i.id %}" class="btn">
+          <img src="{{i.image.url}}" alt="" height="200px"><br>
+          <span class="fw-bold">{{i.title}}</span><br>
+          <span class="fs-5">Rs.{{i.price}}</span>
+          {% if not forloop.last %}
+          </a></div></div>
+          <div class="swiper-slide card">
+          {% endif %}
+      {% endfor %} 
+      </a>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+{% endblock main-content %}
+
+{% block payement-option %} 
+<div class="container my-5">
+  <div class="row">
+   <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+      <img src="{% static 'shop/images/cc.jpg' %}" alt="" srcset="" class="img-fluid">
+      </div>
+    </div>
+   </div>
+   <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+       <img src="{% static 'shop/images/upi.jpg' %}" alt="" srcset="" class="img-fluid">
+      </div>
+    </div>
+   </div>
+   <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+       <img src="{% static 'shop/images/nb.jpg' %}" alt="" srcset="" class="img-fluid">
+      </div>
+    </div>
+   </div>
+   <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+       <img src="{% static 'shop/images/bj.jpg' %}" alt="" srcset="" class="img-fluid">
+      </div>
+    </div>
+   </div>
+  </div>
+ </div>
+{% endblock payement-option %}
+
+{% block end-section %} 
+<h1>Fashion</h1>
+<div class="swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide card">
+      {% for i in fashion %}
+      <div class="card-body">
+        <a href="{% url 'productdetail' i.id %}" class="btn">
+          <img src="{{i.image.url}}" alt="" height="200px"><br>
+          <span class="fw-bold">{{i.title}}</span><br>
+          <span class="fs-5">Rs.{{i.price}}</span>
+          {% if not forloop.last %}
+          </a></div></div>
+          <div class="swiper-slide card">
+          {% endif %}
+      {% endfor %} 
+      </a>
+      </div>
+    </div>
+  </div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+{% endblock end-section %}
