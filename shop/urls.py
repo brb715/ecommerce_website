@@ -10,12 +10,13 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     path('search/', views.search, name='search'),
+    path('contact/', views.contact_us, name='contact_us'),
 
     path('mobile/', views.mobile, name='mobile'),
     path('mobile/<slug:data>/', views.mobile, name='mobiledata'),
 
-    # path('laptop/', views.laptop, name='laptop'),
-    # path('laptop/<slug:data>/', views.laptop, name='laptopdata'),
+    path('laptop/', views.laptop, name='laptop'),
+    path('laptop/<slug:data>/', views.laptop, name='laptopdata'),
 
     path('bottomwear/', views.bottomwear, name='bottomwear'),
     path('bottomwear/<slug:data>', views.bottomwear, name='bottomweardata'),

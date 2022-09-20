@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import Banner, Product
-from .forms import signup, signin
+from .models import Banner, Product, Contact
+from .forms import signup, signin, contact
 
 
 def homepage(request):
@@ -50,6 +50,21 @@ def bottomwear(request, data=None):
         bottomwear = Product.objects.filter(
             sub_category='Bottom Wear').filter(price__gt=600)
     return render(request, 'shop/bottomwear.html', {'bottomwear': bottomwear})
+
+
+def laptop(request, data=None):
+    if data == None:
+        laptops = Product.objects.filter(sub_category='Laptops')
+    elif data == 'below':
+        laptops = Product.objects.filter(
+            sub_category='Laptops').filter(price__lte=30000)
+    elif data == 'above':
+        laptops = Product.objects.filter(
+            sub_category='Laptops').filter(price__gt=30000)
+    else:
+        laptops = Product.objects.filter(
+            sub_category='Laptops').filter(title=data)
+    return render(request, 'shop/laptop.html', {'laptop': laptops})
 
 
 def productdetail(request, id):
@@ -99,12 +114,28 @@ def logout_view(request):
     return redirect('/')
 
 
+def contact_us(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        ph_no = request.POST['phone_no']
+        issue = request.POST['issue']
+        fm = Contact(name=name, email=email, phone_no=ph_no, issue=issue)
+        fm.save()
+        messages.success(request, 'Successfully submitted the form')
+    fm = contact()
+    return render(request, 'shop/contact.html', {'form': fm})
+
+
 def search(request):
     query = request.GET['search']
     if len(query) > 78 or len(query) == 0:
         all = Product.objects.none()
     else:
-        all = Product.objects.filter(title__icontains=query)
+        alltitle = Product.objects.filter(title__icontains=query)
+        alldesc = Product.objects.filter(desc__icontains=query)
+        allsub_category = Product.objects.filter(sub_category__icontains=query)
+        all = alltitle.union(alldesc.union(allsub_category))
     return render(request, 'shop/search.html', {'allSearches': all, 'query': query})
 
 

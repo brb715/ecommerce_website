@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Contact
 
 
 class signup(forms.ModelForm):
@@ -28,4 +29,16 @@ class signin(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}),
             'username': forms.TextInput(attrs={'class': 'form-control'})
+        }
+
+
+class contact(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'phone_no', 'issue']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Full Name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email Address'}),
+            'phone_no': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Phone Number'}),
+            'issue': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Describe your issue.......', 'cols': '40', 'rows': '3'})
         }
