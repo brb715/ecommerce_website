@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import models
-from datetime import datetime
+from django.contrib.auth.models import User
 
 
 class Product(models.Model):
@@ -33,3 +33,30 @@ class Contact(models.Model):
 
     def __str__(self):
         return (f'Message from {self.name} - {self.email}')
+
+
+class Checkout(models.Model):
+    name = models.CharField(max_length=20)
+    email = models.EmailField()
+    current_address = models.CharField(max_length=200)
+    permament_address = models.CharField(max_length=200)
+    phone_no = models.IntegerField()
+    city = models.CharField(max_length=20)
+    state = models.CharField(max_length=20)
+    zip_code = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    @property
+    def __str__(self):
+        return self.user.get_full_name
+
+    def total_cost(self):
+        return self.quantity*self.product.price

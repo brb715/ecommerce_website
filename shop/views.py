@@ -1,9 +1,10 @@
+from .models import Banner, Product, Contact, Cart
+from .forms import signup, signin, contact, checkout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import Banner, Product, Contact
-from .forms import signup, signin, contact
+from django.contrib.auth.decorators import login_required
 
 
 def homepage(request):
@@ -108,6 +109,7 @@ def sign_in(request):
     return render(request, 'shop/signin.html', {'form': fm})
 
 
+@login_required
 def logout_view(request):
     logout(request)
     messages.success(request, 'Successfully Logged Out')
@@ -139,5 +141,40 @@ def search(request):
     return render(request, 'shop/search.html', {'allSearches': all, 'query': query})
 
 
+@login_required(login_url='sign_in')
+def add_to_cart(request, pk):
+    current_user = request.user
+    if current_user.is_authenticated:
+        Cart(user=current_user, product=Product.objects.get(id=pk)).save()
+        messages.success(request, 'Product added to Cart')
+    return redirect(request, 'cart')
+
+
+@login_required(login_url='sign_in')
 def cart(request):
-    return render(request, 'shop/cart.html')
+    current_user = request.user
+    all = []
+    total = 0.0
+    count = 0
+    if current_user.is_authenticated:
+        for p in Cart.objects.all():
+            if p.user == current_user:
+                count = count+1
+                all = Cart.objects.filter(user=current_user)
+                total = total+all[(count-1):count].get().total_cost()
+    return render(request, 'shop/cart.html', {'items': all, 'total': total, 'grand_total': (total+70.0)})
+
+
+@login_required
+def order_view(request):
+    return render(request, 'shop/orders.html')
+
+
+@login_required
+def checkout_view(request):
+    fm = checkout()
+    return render(request, 'shop/checkout.html', {'form': fm})
+
+
+def about(request):
+    return render(request, 'shop/about.html')

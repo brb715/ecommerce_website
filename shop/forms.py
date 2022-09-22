@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Contact
+from .models import Contact, Checkout
 
 
 class signup(forms.ModelForm):
@@ -41,4 +41,21 @@ class contact(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email Address'}),
             'phone_no': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Phone Number'}),
             'issue': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Describe your issue.......', 'cols': '40', 'rows': '3'})
+        }
+
+
+class checkout(forms.ModelForm):
+    class Meta:
+        model = Checkout
+        fields = ['name', 'email', 'current_address',
+                  'permament_address', 'phone_no', 'state', 'city', 'zip_code']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'current_address': forms.TextInput(attrs={'class': 'form-control'}),
+            'permament_address': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone_no': forms.NumberInput(attrs={'class': 'form-control'}),
+            'state': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'zip_code': forms.NumberInput(attrs={'class': 'form-control'})
         }

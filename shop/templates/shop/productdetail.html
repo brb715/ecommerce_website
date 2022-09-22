@@ -15,8 +15,8 @@
           <p>{{ product.desc }}</p>
           <h5>{{ product.price }}</h5>
           <span id="after_add">
-            <a href="{% url 'cart' %}">
-                <button type="button" class="btn btn-primary cart" id="{{ product.id }}">Add to Cart</button>
+            <a href="{% url 'add_to_cart' product.id %}">
+                <button type="button" class="btn btn-primary text-white cart" id="{{ product.id }}">Add to Cart</button>
             </a>
           </span>
         </div>

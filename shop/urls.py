@@ -1,7 +1,6 @@
 from re import template
 from django.urls import path
 from . import views
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', views.homepage, name='home'),
@@ -11,6 +10,7 @@ urlpatterns = [
 
     path('search/', views.search, name='search'),
     path('contact/', views.contact_us, name='contact_us'),
+    path('about/', views.about, name='about'),
 
     path('mobile/', views.mobile, name='mobile'),
     path('mobile/<slug:data>/', views.mobile, name='mobiledata'),
@@ -26,5 +26,8 @@ urlpatterns = [
 
     path('product/<int:id>/', views.productdetail, name='productdetail'),
 
+    path('addtocart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart, name='cart'),
+    path('order/', views.order_view, name='order_view'),
+    path('checkout/', views.checkout_view, name='checkout_view')
 ]

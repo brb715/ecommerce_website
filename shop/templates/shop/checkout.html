@@ -1,0 +1,15 @@
+{% extends 'shop/base.html' %}
+{% block title %} Checkout {% endblock title %}
+
+{% block main-content %}
+<div class="middle">
+    <fieldset style="border-radius: .5rem;">
+        <h1 style="text-align: center;padding-bottom: .5rem;"><em>Add Details</em></h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row form-group p-2">{{ form.as_table }}</div>
+            <button type="submit" class="btn btn-primary text-white">Continue</button>
+        </form>
+    </fieldset>
+</div>
+{% endblock main-content %}

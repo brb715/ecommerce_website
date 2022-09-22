@@ -1,0 +1,33 @@
+{% extends "shop/base.html" %}
+{% block title %} Orders {% endblock title %}
+
+{% block main-content %}
+<div class="container-fluid">
+    <h2 class="text-center mt-3"><strong>Order Summary</strong></h2>
+    <hr class="mb-3">
+    <div class="card">
+        <div class="card-body">
+            {% for product in orders %}
+            <h5>Product: {{ product.title }}</h5>
+            <p>Quantity: {{ product.quantity }}</p>
+            <p class="fw-bold">Price: {{ product.price }}</p>
+            {% empty %}
+            <p>No products added.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <small>
+        Terms and Conditions: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla necessitatibus nam quae.
+        Voluptas illo velit recusandae esse natus, accusamus, distinctio ducimus fugit molestiae saepe nam dolorem ullam
+        nemo, perferendis obcaecati perspiciatis voluptates eveniet enim ad! Voluptatum accusamus dignissimos esse
+        quisquam cum voluptatem, a maiores commodi consectetur soluta amet numquam fugit labore adipisci. Laudantium
+        animi alias suscipit quisquam tenetur quas harum veniam, temporibus quidem obcaecati, aut id iste? Officia
+        libero harum ipsa adipisci itaque magnam quibusdam qui commodi doloremque laborum excepturi officiis, animi
+        soluta assumenda consectetur obcaecati rem corrupti unde reiciendis deleniti incidunt. Esse dolores iste
+        veritatis nemo, pariatur sunt commodi!
+    </small>
+    <a href="{% url 'checkout_view' %}">
+        <button type="submit" class="btn btn-primary text-white">Continue</button>
+    </a>
+</div>
+{% endblock main-content %}
