@@ -2,9 +2,10 @@ from .models import Banner, Product, Contact, Cart
 from .forms import signup, signin, contact, checkout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q, F
 
 
 def homepage(request):
@@ -145,9 +146,16 @@ def search(request):
 def add_to_cart(request, pk):
     current_user = request.user
     if current_user.is_authenticated:
-        Cart(user=current_user, product=Product.objects.get(id=pk)).save()
-        messages.success(request, 'Product added to Cart')
-    return redirect(request, 'cart')
+        product = Product.objects.get(id=pk)
+        already_present = Cart.objects.filter(
+            Q(user=current_user) & Q(product=product)).exists()
+        if not already_present:
+            Cart(user=current_user, product=product).save()
+            messages.success(request, 'Product added to Cart')
+        else:
+            Cart.objects.get(Q(user=current_user) & Q(product=product))
+            messages.info(request, 'Already added to cart')
+    return redirect('cart')
 
 
 @login_required(login_url='sign_in')
@@ -163,6 +171,40 @@ def cart(request):
                 all = Cart.objects.filter(user=current_user)
                 total = total+all[(count-1):count].get().total_cost()
     return render(request, 'shop/cart.html', {'items': all, 'total': total, 'grand_total': (total+70.0)})
+
+
+@login_required
+def plus_cart(request, pk):
+    current_user = request.user
+    if current_user.is_authenticated:
+        product = Product.objects.get(id=pk)
+        item = Cart.objects.get(Q(user=current_user) & Q(product=product))
+        item.quantity = F('quantity') + 1
+        item.save()
+    return redirect('cart')
+
+
+@login_required
+def minus_cart(request, pk):
+    current_user = request.user
+    if current_user.is_authenticated:
+        product = Product.objects.get(id=pk)
+        item = Cart.objects.get(Q(user=current_user) & Q(product=product))
+        item.quantity = F('quantity') - 1
+        item.save()
+        if Cart.objects.get(Q(user=current_user) & Q(product=product)).quantity == 0:
+            item.delete()
+    return redirect('cart')
+
+
+@login_required
+def remove_item(request, pk):
+    current_user = request.user
+    product = Product.objects.get(id=pk)
+    item = Cart.objects.get(Q(user=current_user) & Q(product=product))
+    item.delete()
+    messages.success(request, 'Successfully removed product from the cart.')
+    return redirect('cart')
 
 
 @login_required
