@@ -76,7 +76,7 @@
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Profile</a>
-            <a class="dropdown-item" href="#">Orders</a>
+            <a class="dropdown-item" href="{% url 'order_view' %}">Orders</a>
             <a class="dropdown-item" href="#">Change Password</a>
             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
           </div>
@@ -113,8 +113,8 @@
   {% block banner %} {% endblock banner %}
   {% block livesale %} {% endblock livesale %}
   {% block main-content %} {% endblock main-content %}
-  {% block payement-option %} {% endblock payement-option %}
-  {% block end-section %} {% endblock end-section %}
+  {% block payement-option %} {% endblock payement-option %} 
+  {% block end-section %} {% endblock end-section %} 
 
   <div class="gap"></div>
 

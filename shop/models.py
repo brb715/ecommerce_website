@@ -60,3 +60,13 @@ class Cart(models.Model):
 
     def total_cost(self):
         return self.quantity*self.product.price
+
+
+class Serie(models.Model):     # aka Order model
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.PositiveIntegerField(default=1)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return (f'{self.user.first_name} - {self.product.title}') 

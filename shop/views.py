@@ -1,8 +1,8 @@
-from .models import Banner, Product, Contact, Cart
+from .models import Banner, Product, Contact, Cart, Serie
 from .forms import signup, signin, contact, checkout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F
@@ -154,21 +154,20 @@ def add_to_cart(request, pk):
             messages.success(request, 'Product added to Cart')
         else:
             Cart.objects.get(Q(user=current_user) & Q(product=product))
-            messages.info(request, 'Already added to cart')
+            messages.info(request, 'Already added in cart')
     return redirect('cart')
 
 
 @login_required(login_url='sign_in')
 def cart(request):
     current_user = request.user
-    all = []
+    all = Cart.objects.filter(user=current_user)
     total = 0.0
     count = 0
     if current_user.is_authenticated:
         for p in Cart.objects.all():
             if p.user == current_user:
                 count = count+1
-                all = Cart.objects.filter(user=current_user)
                 total = total+all[(count-1):count].get().total_cost()
     return render(request, 'shop/cart.html', {'items': all, 'total': total, 'grand_total': (total+70.0)})
 
@@ -209,13 +208,34 @@ def remove_item(request, pk):
 
 @login_required
 def order_view(request):
-    return render(request, 'shop/orders.html')
+    current_user = request.user
+    orders = Serie.objects.filter(user=current_user)
+    return render(request, 'shop/orders.html', {'items': orders})
 
 
 @login_required
 def checkout_view(request):
+    current_user = request.user
+    count = 0
+    total = 0.0
+    orders = Cart.objects.filter(user=current_user)
+    for p in Cart.objects.all():
+        if p.user == current_user:
+            count = count+1
+            total = total+orders[(count-1):count].get().total_cost()
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        add1 = request.POST['current_address']
+        add2 = request.POST['permament_address']
+        pno = request.POST['phone_no']
+        city = request.POST['city']
+        state = request.POST['state']
+        zcode = request.POST['zip_code']
+
+        messages.success(request, '')
     fm = checkout()
-    return render(request, 'shop/checkout.html', {'form': fm})
+    return render(request, 'shop/checkout.html', {'form': fm, 'items': orders, 'total': total, 'grand_total':total+70.0})
 
 
 def about(request):
