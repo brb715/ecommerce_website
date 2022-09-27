@@ -1,4 +1,4 @@
-from .models import Banner, Product, Contact, Cart, Serie
+from .models import Banner, Product, Contact, Cart, Serie, Checkout
 from .forms import signup, signin, contact, checkout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -163,12 +163,8 @@ def cart(request):
     current_user = request.user
     all = Cart.objects.filter(user=current_user)
     total = 0.0
-    count = 0
-    if current_user.is_authenticated:
-        for p in Cart.objects.all():
-            if p.user == current_user:
-                count = count+1
-                total = total+all[(count-1):count].get().total_cost()
+    for item in all:
+        total = total+item.total_cost()
     return render(request, 'shop/cart.html', {'items': all, 'total': total, 'grand_total': (total+70.0)})
 
 
@@ -210,19 +206,16 @@ def remove_item(request, pk):
 def order_view(request):
     current_user = request.user
     orders = Serie.objects.filter(user=current_user)
-    return render(request, 'shop/orders.html', {'items': orders})
+    return render(request, 'shop/orders.html', {'products': orders})
 
 
 @login_required
 def checkout_view(request):
     current_user = request.user
-    count = 0
     total = 0.0
     orders = Cart.objects.filter(user=current_user)
-    for p in Cart.objects.all():
-        if p.user == current_user:
-            count = count+1
-            total = total+orders[(count-1):count].get().total_cost()
+    for item in orders:
+        total = total+item.total_cost()
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
@@ -232,10 +225,16 @@ def checkout_view(request):
         city = request.POST['city']
         state = request.POST['state']
         zcode = request.POST['zip_code']
+        Checkout(name=name, email=email, current_address=add1, permament_address=add2, phone_no=pno, city=city, state=state, zip_code=zcode).save()
 
-        messages.success(request, '')
+        list = [Serie(**item) for item in orders.values()]
+        Serie.objects.bulk_create(list)
+        Cart.objects.filter(user=current_user).delete()
+
+        messages.success(request, 'Successfully Purchased')
+        return redirect('order_view')
     fm = checkout()
-    return render(request, 'shop/checkout.html', {'form': fm, 'items': orders, 'total': total, 'grand_total':total+70.0})
+    return render(request, 'shop/checkout.html', {'form': fm, 'items': orders, 'total': total, 'grand_total': total+70.0})
 
 
 def about(request):

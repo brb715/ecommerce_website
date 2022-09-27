@@ -5,9 +5,9 @@
 <div class="container">
     <h2 class="text-center mt-3"><strong>Order Summary</strong></h2>
     <hr class="mb-3">
-    {% if items %}
+    {% if products %}
     <div class="border p-3">
-        {% for item in items %}
+        {% for item in products %}
         <div class="row">
             <div class="col-sm-3 text-center align-self-center">
                 <img src="{{ item.product.image.url }}" alt="" srcset="" class="img-fluid img-thumbnail shadow-sm"
@@ -15,7 +15,7 @@
             </div>
             <div class="col-sm-9">
                 <div>
-                    <h5>{{ item.product.tiltle }}</h5>
+                    <h5>{{ item.product.title }}</h5>
                     <p class="mb-2 text-muted small">{{ item.product.desc }}</p>
                     <div class="my-3">
                         <label for="quantity">Quantity:</label>
