@@ -32,6 +32,35 @@ class signin(forms.ModelForm):
         }
 
 
+class profile(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        help_texts = {
+            'username': None
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Should not contain characters'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'})
+        }
+
+
+class change(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'confirm_password']
+        help_texts = {
+            'username': None
+        }
+        widgets = {
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}),
+            'confirm _password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password again'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'})
+        }
+        
+
 class contact(forms.ModelForm):
     class Meta:
         model = Contact

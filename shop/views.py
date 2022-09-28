@@ -1,5 +1,5 @@
 from .models import Banner, Product, Contact, Cart, Serie, Checkout
-from .forms import signup, signin, contact, checkout
+from .forms import signup, signin, contact, checkout, profile, change
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -115,6 +115,47 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'Successfully Logged Out')
     return redirect('/')
+
+
+@login_required
+def update_password(request):
+    current_user = request.user
+    data = User.objects.get(id=current_user.id)
+    fm = change(instance=id)
+    if request.method == 'POST':
+        pass1 = request.POST['password']
+        pass2 = request.POST['change_password']
+        if not pass1 == pass2:
+            messages.error(request, 'Passwords do not match')
+            return redirect('password')
+        else:
+            fm = User(password=pass1)
+            fm.update()
+            messages.success(request, 'Password Updated')
+            return redirect('/')
+    return render(request, 'shop/change-password.html', {'form': fm})
+
+
+@login_required
+def profile_view(request):
+    current_user = request.user
+    data = User.objects.get(id=current_user.id)
+    fm = profile(instance=data)
+    if request.method == 'POST':
+        username = request.POST['username']
+        fname = request.POST['first_name']
+        lname = request.POST['last_name']
+        email = request.POST['email']
+
+        if not username.isalnum():
+            messages.error(request, 'Username should not contain characters')
+            return redirect('profile')
+
+        fm = User(username=username, email=email, first_name=fname, last_name=lname)
+        fm.update()
+        messages.success(request, 'Profile Updated')
+        return redirect('/')
+    return render(request, 'shop/profile.html', {'form': fm})
 
 
 def contact_us(request):

@@ -75,7 +75,7 @@
             {{request.user.first_name}}
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Profile</a>
+            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
             <a class="dropdown-item" href="{% url 'order_view' %}">Orders</a>
             <a class="dropdown-item" href="#">Change Password</a>
             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
