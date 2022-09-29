@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Contact, Checkout
+from .models import Contact, Checkout, Change
 
 
 class signup(forms.ModelForm):
@@ -48,18 +48,20 @@ class profile(forms.ModelForm):
 
 
 class change(forms.ModelForm):
+    username = forms.CharField(max_length=255, label='Username', widget=forms.TextInput(
+        attrs={'class': 'form-control mb-1'}))
+    password = forms.CharField(
+        max_length=50, label='Old Password', widget=forms.PasswordInput(attrs={'class': 'form-control mb-1', 'placeholder': 'Enter current password'}))
     class Meta:
-        model = User
-        fields = ['username', 'password', 'confirm_password']
+        model = Change
+        fields = ['username', 'password', 'new_password']
         help_texts = {
             'username': None
         }
         widgets = {
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}),
-            'confirm _password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password again'}),
-            'username': forms.TextInput(attrs={'class': 'form-control'})
+            'new_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter new password'})
         }
-        
+
 
 class contact(forms.ModelForm):
     class Meta:
@@ -76,8 +78,7 @@ class contact(forms.ModelForm):
 class checkout(forms.ModelForm):
     class Meta:
         model = Checkout
-        fields = ['name', 'email', 'current_address',
-                  'permament_address', 'phone_no', 'state', 'city', 'zip_code']
+        fields = ['name', 'email', 'current_address', 'permament_address', 'phone_no', 'state', 'city', 'zip_code']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),

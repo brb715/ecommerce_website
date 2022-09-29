@@ -90,6 +90,8 @@ def sign_up(request):
         fm.first_name = fname
         fm.last_name = lname
         fm.save()
+        user = authenticate(username=username, password=password)
+        login(request, user)
         messages.success(request, 'You successfully signed up for the website')
         return redirect('/')
     fm = signup()
@@ -100,12 +102,13 @@ def sign_in(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
             messages.success(request, 'Successfully Logged In')
             return redirect('/')
+        else:
+            pass
     fm = signin()
     return render(request, 'shop/signin.html', {'form': fm})
 
@@ -120,17 +123,18 @@ def logout_view(request):
 @login_required
 def update_password(request):
     current_user = request.user
-    data = User.objects.get(id=current_user.id)
-    fm = change(instance=id)
+    fm = change(instance=current_user)
     if request.method == 'POST':
         pass1 = request.POST['password']
-        pass2 = request.POST['change_password']
-        if not pass1 == pass2:
-            messages.error(request, 'Passwords do not match')
+        pass2 = request.POST['new_password']
+        user = authenticate(username=current_user, password=pass1)
+        if user is None:
+            messages.error(request, 'Password do not match with the current password')
             return redirect('password')
         else:
-            fm = User(password=pass1)
-            fm.update()
+            user = User.objects.get(username=current_user)
+            user.set_password(pass2)
+            user.save()
             messages.success(request, 'Password Updated')
             return redirect('/')
     return render(request, 'shop/change-password.html', {'form': fm})
@@ -151,8 +155,8 @@ def profile_view(request):
             messages.error(request, 'Username should not contain characters')
             return redirect('profile')
 
-        fm = User(username=username, email=email, first_name=fname, last_name=lname)
-        fm.update()
+        user = User(username=username, email=email, first_name=fname, last_name=lname)
+        user.save()
         messages.success(request, 'Profile Updated')
         return redirect('/')
     return render(request, 'shop/profile.html', {'form': fm})
