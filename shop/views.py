@@ -141,7 +141,7 @@ def update_password(request):
 
 
 @login_required
-def profile_view(request):
+def profile_view(request, pk):
     current_user = request.user
     data = User.objects.get(id=current_user.id)
     fm = profile(instance=data)
@@ -155,8 +155,7 @@ def profile_view(request):
             messages.error(request, 'Username should not contain characters')
             return redirect('profile')
 
-        user = User(username=username, email=email, first_name=fname, last_name=lname)
-        user.save()
+        User.objects.filter(id=pk).update(username=username, email=email, first_name=fname, last_name=lname)
         messages.success(request, 'Profile Updated')
         return redirect('/')
     return render(request, 'shop/profile.html', {'form': fm})

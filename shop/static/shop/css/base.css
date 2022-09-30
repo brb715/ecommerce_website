@@ -28,7 +28,7 @@ body {
 }
 
 .cart:hover {
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 .carousel-indicators li {
@@ -46,12 +46,13 @@ h1 {
     border: none;
 }
 
-.swiper-button.prev.icon, .swiper-button.next.icon {
+.swiper-button.prev.icon,
+.swiper-button.next.icon {
     color: black;
 }
 
 fieldset {
-    box-shadow: 0 0 5px black ;
+    box-shadow: 0 0 5px black;
     padding: 1.5rem;
 }
 
@@ -63,9 +64,17 @@ fieldset {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 
     overflow-wrap: break-word;
+}
+
+.ml-6 {
+    margin-left: 5rem;
+}
+
+.mr-6 {
+    margin-right: 5rem;
 }
 
 button {

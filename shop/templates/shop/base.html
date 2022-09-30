@@ -26,7 +26,7 @@
   <!-- Navbar -->
   <div class="navbar navbar-expand-lg bg-primary">
     <a class="navbar-brand " href="/">
-      <h3 class="pt-2 ml-5">shopping cart</h3>
+      <h3 class="pt-2 ml-6">shopping cart</h3>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarbase"
       aria-controls="navbarbase" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,14 +68,14 @@
     </form>
 
     <div class="d-flex justify-content-end">
-      <ul class="navbar-nav mr-5">
+      <ul class="navbar-nav mr-6">
         {% if user.is_authenticated %}
         <li class="nav-item active dropdown" style="margin-top: .7rem;">
           <a class="nav-link part dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
             {{request.user.first_name}}
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+            <a class="dropdown-item" href="{% url 'profile' user.id %}">Profile</a>
             <a class="dropdown-item" href="{% url 'order_view' %}">Orders</a>
             <a class="dropdown-item" href="{% url 'password' %}">Change Password</a>
             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
