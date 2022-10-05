@@ -19,14 +19,11 @@ def mobile(request, data=None):
     if data == None:
         mobiles = Product.objects.filter(sub_category='Smartphones')
     elif data == 'below':
-        mobiles = Product.objects.filter(
-            sub_category='Smartphones').filter(price__lte=10000)
+        mobiles = Product.objects.filter(sub_category='Smartphones').filter(price__lte=10000)
     elif data == 'above':
-        mobiles = Product.objects.filter(
-            sub_category='Smartphones').filter(price__gt=10000)
+        mobiles = Product.objects.filter(sub_category='Smartphones').filter(price__gt=10000)
     else:
-        mobiles = Product.objects.filter(
-            sub_category='Smartphones').filter(title=data)
+        mobiles = Product.objects.filter(sub_category='Smartphones').filter(title=data)
     return render(request, 'shop/smartphone.html', {'mobile': mobiles})
 
 
@@ -34,11 +31,9 @@ def topwear(request, data=None):
     if data == None:
         topwear = Product.objects.filter(sub_category='Top Wear')
     elif data == 'below':
-        topwear = Product.objects.filter(
-            sub_category='Top Wear').filter(price__lte=400)
+        topwear = Product.objects.filter(sub_category='Top Wear').filter(price__lte=400)
     elif data == 'above':
-        topwear = Product.objects.filter(
-            sub_category='Top Wear').filter(price__gt=400)
+        topwear = Product.objects.filter(sub_category='Top Wear').filter(price__gt=400)
     return render(request, 'shop/topwear.html', {'topwear': topwear})
 
 
@@ -46,11 +41,9 @@ def bottomwear(request, data=None):
     if data == None:
         bottomwear = Product.objects.filter(sub_category='Bottom Wear')
     elif data == 'below':
-        bottomwear = Product.objects.filter(
-            sub_category='Bottom Wear').filter(price__lte=600)
+        bottomwear = Product.objects.filter(sub_category='Bottom Wear').filter(price__lte=600)
     elif data == 'above':
-        bottomwear = Product.objects.filter(
-            sub_category='Bottom Wear').filter(price__gt=600)
+        bottomwear = Product.objects.filter(sub_category='Bottom Wear').filter(price__gt=600)
     return render(request, 'shop/bottomwear.html', {'bottomwear': bottomwear})
 
 
@@ -58,14 +51,11 @@ def laptop(request, data=None):
     if data == None:
         laptops = Product.objects.filter(sub_category='Laptops')
     elif data == 'below':
-        laptops = Product.objects.filter(
-            sub_category='Laptops').filter(price__lte=30000)
+        laptops = Product.objects.filter(sub_category='Laptops').filter(price__lte=30000)
     elif data == 'above':
-        laptops = Product.objects.filter(
-            sub_category='Laptops').filter(price__gt=30000)
+        laptops = Product.objects.filter(sub_category='Laptops').filter(price__gt=30000)
     else:
-        laptops = Product.objects.filter(
-            sub_category='Laptops').filter(title=data)
+        laptops = Product.objects.filter(sub_category='Laptops').filter(title=data)
     return render(request, 'shop/laptop.html', {'laptop': laptops})
 
 
@@ -81,10 +71,6 @@ def sign_up(request):
         lname = request.POST['last_name']
         email = request.POST['email']
         password = request.POST['password']
-
-        if not username.isalnum():
-            messages.error(request, 'Username should not contain characters')
-            return redirect('/')
 
         fm = User.objects.create_user(username, email, password)
         fm.first_name = fname
@@ -108,7 +94,8 @@ def sign_in(request):
             messages.success(request, 'Successfully Logged In')
             return redirect('/')
         else:
-            pass
+            messages.error(request, 'Credentials did not match with any records in our database')
+            return redirect('sign_in')
     fm = signin()
     return render(request, 'shop/signin.html', {'form': fm})
 
@@ -143,18 +130,12 @@ def update_password(request):
 @login_required
 def profile_view(request, pk):
     current_user = request.user
-    data = User.objects.get(id=current_user.id)
-    fm = profile(instance=data)
+    fm = profile(instance=current_user)
     if request.method == 'POST':
         username = request.POST['username']
         fname = request.POST['first_name']
         lname = request.POST['last_name']
         email = request.POST['email']
-
-        if not username.isalnum():
-            messages.error(request, 'Username should not contain characters')
-            return redirect('profile')
-
         User.objects.filter(id=pk).update(username=username, email=email, first_name=fname, last_name=lname)
         messages.success(request, 'Profile Updated')
         return redirect('/')
@@ -170,6 +151,7 @@ def contact_us(request):
         fm = Contact(name=name, email=email, phone_no=ph_no, issue=issue)
         fm.save()
         messages.success(request, 'Successfully submitted the form')
+        return redirect('/')
     fm = contact()
     return render(request, 'shop/contact.html', {'form': fm})
 

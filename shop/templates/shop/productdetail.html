@@ -11,7 +11,7 @@
       <h2>{{ product.title }}</h2>
       <hr>
       <p>{{ product.desc }}</p> <br>
-      <h4>Rs. {{ product.price }} <small class="fw-light text-decoration-line-through">15999</small></h4> <br>
+      <h4>Rs. {{ product.price }} <del><small class="fw-light text-muted">15999</small></del></h4> <br>
       <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary shadow px-5 py-2 cart">Add to Cart</a>
       <h5 class="mt-5">Available Offers</h5>
       <ul>

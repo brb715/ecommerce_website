@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping Cart | {% block title %} {% endblock title %}</title>
+  <title>{% block title %} {% endblock title %}</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
     integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
@@ -85,7 +85,7 @@
           <span class="sr-only">(current)</span>
           <a href="{% url 'cart' %}">
             <img class="cart" src="{% static 'shop/images/icon-cart.svg' %}" alt="" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Bottom popover">
-          </a><span id="total_items">{{ items|length }}</span>
+          </a>
         </li>
         {% else %}
         <li class="nav-item">
