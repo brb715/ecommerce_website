@@ -1,5 +1,5 @@
 from .models import Banner, Product, Contact, Cart, Serie, Checkout
-from .forms import signup, signin, contact, checkout, profile, change
+from .forms import signup, signin, contact, checkout, profile
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -19,11 +19,11 @@ def mobile(request, data=None):
     if data == None:
         mobiles = Product.objects.filter(sub_category='Smartphones')
     elif data == 'below':
-        mobiles = Product.objects.filter(sub_category='Smartphones').filter(price__lte=10000)
+        mobiles = Product.objects.filter(Q(sub_category='Smartphones') & Q(price__lte=10000))
     elif data == 'above':
-        mobiles = Product.objects.filter(sub_category='Smartphones').filter(price__gt=10000)
+        mobiles = Product.objects.filter(Q(sub_category='Smartphones') & Q(price__gt=10000))
     else:
-        mobiles = Product.objects.filter(sub_category='Smartphones').filter(title=data)
+        mobiles = Product.objects.filter(Q(sub_category='Smartphones') & Q(title=data))
     return render(request, 'shop/smartphone.html', {'mobile': mobiles})
 
 
@@ -31,9 +31,9 @@ def topwear(request, data=None):
     if data == None:
         topwear = Product.objects.filter(sub_category='Top Wear')
     elif data == 'below':
-        topwear = Product.objects.filter(sub_category='Top Wear').filter(price__lte=400)
+        topwear = Product.objects.filter(Q(sub_category='Top Wear') & Q(price__lte=400))
     elif data == 'above':
-        topwear = Product.objects.filter(sub_category='Top Wear').filter(price__gt=400)
+        topwear = Product.objects.filter(Q(sub_category='Top Wear') & Q(price__gt=400))
     return render(request, 'shop/topwear.html', {'topwear': topwear})
 
 
@@ -41,9 +41,9 @@ def bottomwear(request, data=None):
     if data == None:
         bottomwear = Product.objects.filter(sub_category='Bottom Wear')
     elif data == 'below':
-        bottomwear = Product.objects.filter(sub_category='Bottom Wear').filter(price__lte=600)
+        bottomwear = Product.objects.filter(Q(sub_category='Bottom Wear') & Q(price__lte=600))
     elif data == 'above':
-        bottomwear = Product.objects.filter(sub_category='Bottom Wear').filter(price__gt=600)
+        bottomwear = Product.objects.filter(Q(sub_category='Bottom Wear') & Q(price__gt=600))
     return render(request, 'shop/bottomwear.html', {'bottomwear': bottomwear})
 
 
@@ -51,11 +51,11 @@ def laptop(request, data=None):
     if data == None:
         laptops = Product.objects.filter(sub_category='Laptops')
     elif data == 'below':
-        laptops = Product.objects.filter(sub_category='Laptops').filter(price__lte=30000)
+        laptops = Product.objects.filter(Q(sub_category='Laptops') & Q(price__lte=30000))
     elif data == 'above':
-        laptops = Product.objects.filter(sub_category='Laptops').filter(price__gt=30000)
+        laptops = Product.objects.filter(Q(sub_category='Laptops') & Q(price__gt=30000))
     else:
-        laptops = Product.objects.filter(sub_category='Laptops').filter(title=data)
+        laptops = Product.objects.filter(Q(sub_category='Laptops') & Q(title=data))
     return render(request, 'shop/laptop.html', {'laptop': laptops})
 
 
@@ -110,13 +110,12 @@ def logout_view(request):
 @login_required
 def update_password(request):
     current_user = request.user
-    fm = change(instance=current_user)
     if request.method == 'POST':
         pass1 = request.POST['password']
         pass2 = request.POST['new_password']
         user = authenticate(username=current_user, password=pass1)
         if user is None:
-            messages.error(request, 'Password do not match with the current password')
+            messages.error(request, 'Old Password do not match with the current password')
             return redirect('password')
         else:
             user = User.objects.get(username=current_user)
@@ -124,7 +123,7 @@ def update_password(request):
             user.save()
             messages.success(request, 'Password Updated')
             return redirect('/')
-    return render(request, 'shop/change-password.html', {'form': fm})
+    return render(request, 'shop/change-password.html', {'username': current_user})
 
 
 @login_required
@@ -173,13 +172,11 @@ def add_to_cart(request, pk):
     current_user = request.user
     if current_user.is_authenticated:
         product = Product.objects.get(id=pk)
-        already_present = Cart.objects.filter(
-            Q(user=current_user) & Q(product=product)).exists()
+        already_present = Cart.objects.filter(Q(user=current_user) & Q(product=product)).exists()
         if not already_present:
             Cart(user=current_user, product=product).save()
             messages.success(request, 'Product added to Cart')
         else:
-            Cart.objects.get(Q(user=current_user) & Q(product=product))
             messages.info(request, 'Already added in cart')
     return redirect('cart')
 

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Contact, Checkout, Change
+from .models import Contact, Checkout
 
 
 class signup(forms.ModelForm):
@@ -44,22 +44,6 @@ class profile(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'})
-        }
-
-
-class change(forms.ModelForm):
-    username = forms.CharField(max_length=255, label='Username', widget=forms.TextInput(
-        attrs={'class': 'form-control mb-1'}))
-    password = forms.CharField(
-        max_length=50, label='Old Password', widget=forms.PasswordInput(attrs={'class': 'form-control mb-1', 'placeholder': 'Enter current password'}))
-    class Meta:
-        model = Change
-        fields = ['username', 'password', 'new_password']
-        help_texts = {
-            'username': None
-        }
-        widgets = {
-            'new_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter new password'})
         }
 
 

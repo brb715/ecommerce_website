@@ -26,7 +26,7 @@
   <!-- Navbar -->
   <div class="navbar navbar-expand-lg bg-primary">
     <a class="navbar-brand " href="/">
-      <h3 class="pt-2 ml-6">shopping cart</h3>
+      <h3 class="pt-2 ml-6"><strong><em>shopping cart</em></strong></h3>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarbase"
       aria-controls="navbarbase" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
     <div class="collapse navbar-collapse" id="navbarbase">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active dropdown">
-          <a class="nav-link part dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link part dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
             Fashion
           </a>
           <div class="dropdown-menu">
@@ -45,7 +45,7 @@
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link part dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link part dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
             Electronics
           </a>
           <div class="dropdown-menu">
@@ -71,7 +71,7 @@
       <ul class="navbar-nav mr-6">
         {% if user.is_authenticated %}
         <li class="nav-item active dropdown" style="margin-top: .7rem;">
-          <a class="nav-link part dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link part dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
             {{request.user.first_name}}
           </a>
           <div class="dropdown-menu">

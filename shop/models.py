@@ -24,14 +24,6 @@ class Banner(models.Model):
         return self.title
 
 
-class Change(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    new_password = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.user.first_name
-
-
 class Contact(models.Model):
     name = models.CharField(max_length=20)
     phone_no = models.IntegerField()
