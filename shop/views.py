@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F
 
-
 def homepage(request):
     banners = Banner.objects.all()
     products = Product.objects.all()
@@ -61,7 +60,15 @@ def laptop(request, data=None):
 
 def productdetail(request, id):
     product = Product.objects.get(id=id)
-    return render(request, 'shop/productdetail.html', {'product': product})
+    current_user = request.user
+    colour = 'primary'
+    text = 'Add to Cart'
+    if current_user.is_authenticated:
+        already_present = Cart.objects.filter(Q(user=current_user) & Q(product=product)).exists()
+        if already_present:
+            colour = 'warning unclickable'
+            text = 'Added to Cart'
+    return render(request, 'shop/productdetail.html', {'product': product, 'colour': colour, 'text': text})
 
 
 def sign_up(request):
@@ -113,9 +120,13 @@ def update_password(request):
     if request.method == 'POST':
         pass1 = request.POST['password']
         pass2 = request.POST['new_password']
+        pass3 = request.POST['confirm_password']
         user = authenticate(username=current_user, password=pass1)
         if user is None:
             messages.error(request, 'Old Password do not match with the current password')
+            return redirect('password')
+        elif pass2 != pass3:
+            messages.error(request, 'New Password did not match.....Try Again')
             return redirect('password')
         else:
             user = User.objects.get(username=current_user)
@@ -170,14 +181,13 @@ def search(request):
 @login_required(login_url='sign_in')
 def add_to_cart(request, pk):
     current_user = request.user
-    if current_user.is_authenticated:
-        product = Product.objects.get(id=pk)
-        already_present = Cart.objects.filter(Q(user=current_user) & Q(product=product)).exists()
-        if not already_present:
-            Cart(user=current_user, product=product).save()
-            messages.success(request, 'Product added to Cart')
-        else:
-            messages.info(request, 'Already added in cart')
+    product = Product.objects.get(id=pk)
+    already_present = Cart.objects.filter(Q(user=current_user) & Q(product=product)).exists()
+    if not already_present:
+        Cart(user=current_user, product=product).save()
+        messages.success(request, 'Product added to Cart')
+    else:
+        messages.info(request, 'Already added in cart')
     return redirect('cart')
 
 
@@ -194,24 +204,22 @@ def cart(request):
 @login_required
 def plus_cart(request, pk):
     current_user = request.user
-    if current_user.is_authenticated:
-        product = Product.objects.get(id=pk)
-        item = Cart.objects.get(Q(user=current_user) & Q(product=product))
-        item.quantity = F('quantity') + 1
-        item.save()
+    product = Product.objects.get(id=pk)
+    item = Cart.objects.get(Q(user=current_user) & Q(product=product))
+    item.quantity = F('quantity') + 1
+    item.save()
     return redirect('cart')
 
 
 @login_required
 def minus_cart(request, pk):
     current_user = request.user
-    if current_user.is_authenticated:
-        product = Product.objects.get(id=pk)
-        item = Cart.objects.get(Q(user=current_user) & Q(product=product))
-        item.quantity = F('quantity') - 1
-        item.save()
-        if Cart.objects.get(Q(user=current_user) & Q(product=product)).quantity == 0:
-            item.delete()
+    product = Product.objects.get(id=pk)
+    item = Cart.objects.get(Q(user=current_user) & Q(product=product))
+    item.quantity = F('quantity') - 1
+    item.save()
+    if Cart.objects.get(Q(user=current_user) & Q(product=product)).quantity == 0:
+        item.delete()
     return redirect('cart')
 
 

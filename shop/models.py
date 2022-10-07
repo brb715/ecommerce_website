@@ -69,4 +69,4 @@ class Serie(models.Model):     # aka Order model
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (f'{self.user.first_name} - {self.product.title}') 
+        return self.date

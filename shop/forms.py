@@ -13,9 +13,9 @@ class signup(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Must contain atleast 8 characters'}),
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Should not contain characters'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'})
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter first name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter last name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email address'})
         }
 
 
@@ -28,7 +28,7 @@ class signin(forms.ModelForm):
         }
         widgets = {
             'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}),
-            'username': forms.TextInput(attrs={'class': 'form-control'})
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter username'})
         }
 
 
@@ -40,7 +40,7 @@ class profile(forms.ModelForm):
             'username': None
         }
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Should not contain characters'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'})

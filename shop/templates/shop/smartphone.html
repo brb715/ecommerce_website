@@ -7,7 +7,7 @@
   <div class="row ">
     <div class="col-sm-2">
       <div class="list-group">
-        <a class="list-group-item list-group-item-action active" href="{% url 'mobile' %}" >All</a>
+        <a class="list-group-item list-group-item-action" href="{% url 'mobile' %}" >All</a>
         <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'Samsung' %}" >Samsung</a>
         <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'Apple' %}" >Apple</a>
         <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'below' %}">Below 10000</a>
@@ -20,7 +20,7 @@
          <div class="col-sm-4 text-center mb-4">
           <a href="{% url 'productdetail' i.id %}" class="">
            <div class="item">
-            <img src="{{i.image.url}}" alt="" height="300" class="">
+            <img src="{{i.image.url}}" alt="" height="260" class="">
             <div class="fw-bold">{{i.title}}</div>
             <div class="fw-bold">Rs. {{i.price}}</div>
            </div>

@@ -12,7 +12,7 @@
       <hr>
       <p>{{ product.desc }}</p> <br>
       <h4>Rs. {{ product.price }} <del><small class="fw-light text-muted">15999</small></del></h4> <br>
-      <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary shadow px-5 py-2 cart">Add to Cart</a>
+      <a href="{% url 'add_to_cart' product.id %}" class="btn btn-{{ colour }} shadow px-5 py-2 cart">{{ text }}</a>
       <h5 class="mt-5">Available Offers</h5>
       <ul>
         <li>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit</li>

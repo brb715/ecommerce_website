@@ -35,6 +35,11 @@ a:hover {
     text-decoration: none;
 }
 
+.unclickable {
+    pointer-events: none;
+    cursor: default;
+}
+
 .carousel-indicators li {
     border-radius: 100%;
     height: 10px;
