@@ -7,11 +7,11 @@
   <div class="row ">
     <div class="col-sm-2">
       <div class="list-group">
-        <a class="list-group-item list-group-item-action" href="{% url 'mobile' %}" >All</a>
-        <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'Samsung' %}" >Samsung</a>
-        <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'Apple' %}" >Apple</a>
-        <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'below' %}">Below 10000</a>
-        <a class="list-group-item list-group-item-action" href="{% url 'mobiledata' 'above' %}">Above 10000</a> 
+        <a class="list-group-item list-group-item-action {{ all }}" href="{% url 'mobile' 'all' %}" >All</a>
+        <a class="list-group-item list-group-item-action {{ Samsung }}" href="{% url 'mobile' 'Samsung' %}" >Samsung</a>
+        <a class="list-group-item list-group-item-action {{ Apple }}" href="{% url 'mobile' 'Apple' %}" >Apple</a>
+        <a class="list-group-item list-group-item-action {{ below }}" href="{% url 'mobile' 'below' %}">Below 10000</a>
+        <a class="list-group-item list-group-item-action {{ above }}" href="{% url 'mobile' 'above' %}">Above 10000</a> 
       </div>
     </div>
     <div class="offset-1 col-sm-9">

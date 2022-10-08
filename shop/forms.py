@@ -69,7 +69,7 @@ class checkout(forms.ModelForm):
             'current_address': forms.TextInput(attrs={'class': 'form-control'}),
             'permament_address': forms.TextInput(attrs={'class': 'form-control'}),
             'phone_no': forms.NumberInput(attrs={'class': 'form-control'}),
-            'state': forms.TextInput(attrs={'class': 'form-control'}),
-            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'state': forms.Select(attrs={'class': 'form-control'}),
+            'city': forms.Select(attrs={'class': 'form-control'}),
             'zip_code': forms.NumberInput(attrs={'class': 'form-control'})
         }

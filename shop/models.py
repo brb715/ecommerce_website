@@ -36,13 +36,53 @@ class Contact(models.Model):
 
 
 class Checkout(models.Model):
+    class StateChoices(models.TextChoices):
+        Andaman_and_Nicobar_Islands = "Andaman and Nicobar Islands"
+        Andhra_Pradesh = "Andhra Pradesh"
+        Arunachal_Pradesh = "Arunachal Pradesh"
+        Assam = "Assam"
+        Bihar = "Bihar"
+        Chhattisgarh = "Chhattisgarh"
+        Chandigarh = "Chandigarh"
+        Dadra_and_Nagar_Haveli = "Dadra and Nagar Haveli"
+        Daman_and_Diu = "Daman and Diu"
+        Delhi = "Delhi"
+        Goa = "Goa"
+        Gujarat = "Gujarat"
+        Haryana = "Haryana"
+        Himachal_Pradesh = "Himachal Pradesh"
+        Jammu_and_Kashmir = "Jammu and Kashmir"
+        Jharkhand = "Jharkhand"
+        Karnataka = "Karnataka"
+        Kerala = "Kerala"
+        Ladakh = "Ladakh"
+        Lakshadweep = "Lakshadweep"
+        Madhya_Pradesh = "Madhya Pradesh"
+        Maharashtra = "Maharashtra"
+        Manipur = "Manipur"
+        Meghalaya = "Meghalaya"
+        Mizoram = "Mizoram"
+        Nagaland = "Nagaland"
+        Odisha = "Odisha"
+        Punjab = "Punjab"
+        Pondicherry = "Pondicherry"
+        Rajasthan = "Rajasthan"
+        Sikkim = "Sikkim"
+        Tamil_Nadu = "Tamil Nadu"
+        Telangana = "Telangana"
+        Tripura = "Tripura"
+        Uttar_Pradesh = "Uttar Pradesh"
+        Uttarakhand = "Uttarakhand"
+        West_Bengal = "West Bengal"
+
+
     name = models.CharField(max_length=20)
     email = models.EmailField()
     current_address = models.CharField(max_length=200)
     permament_address = models.CharField(max_length=200)
     phone_no = models.IntegerField()
-    city = models.CharField(max_length=20)
-    state = models.CharField(max_length=20)
+    state = models.CharField(max_length=27, choices=StateChoices.choices)
+    city = models.CharField(max_length=30)
     zip_code = models.IntegerField()
 
     def __str__(self):

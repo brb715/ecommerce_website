@@ -13,19 +13,12 @@ urlpatterns = [
     path('contact/', views.contact_us, name='contact_us'),
     path('about/', views.about, name='about'),
 
-    path('mobile/', views.mobile, name='mobile'),
-    path('mobile/<slug:data>/', views.mobile, name='mobiledata'),
-
-    path('laptop/', views.laptop, name='laptop'),
-    path('laptop/<slug:data>/', views.laptop, name='laptopdata'),
-
-    path('bottomwear/', views.bottomwear, name='bottomwear'),
-    path('bottomwear/<slug:data>', views.bottomwear, name='bottomweardata'),
-
-    path('topwear/', views.topwear, name='topwear'),
-    path('topwear/<slug:data>', views.topwear, name='topweardata'),
-
     path('product/<int:id>/', views.productdetail, name='productdetail'),
+
+    path('mobile/<slug:data>/', views.mobile, name='mobile'),
+    path('laptop/<slug:data>/', views.laptop, name='laptop'),
+    path('bottomwear/<slug:data>/', views.bottomwear, name='bottomwear'),
+    path('topwear/<slug:data>/', views.topwear, name='topwear'),
 
     path('addtocart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart, name='cart'),

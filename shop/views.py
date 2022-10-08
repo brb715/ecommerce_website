@@ -2,10 +2,10 @@ from .models import Banner, Product, Contact, Cart, Serie, Checkout
 from .forms import signup, signin, contact, checkout, profile
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db.models import Q, F
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F
 
 def homepage(request):
     banners = Banner.objects.all()
@@ -14,8 +14,8 @@ def homepage(request):
     return render(request, 'shop/home.html', {'range': range(1, len(banners)), 'banner': banners, 'first_ban': banners[0], 'product': products, 'first_prod': products[0], 'fashion': fashion})
 
 
-def mobile(request, data=None):
-    if data == None:
+def mobile(request, data):
+    if data == 'all':
         mobiles = Product.objects.filter(sub_category='Smartphones')
     elif data == 'below':
         mobiles = Product.objects.filter(Q(sub_category='Smartphones') & Q(price__lte=10000))
@@ -23,31 +23,34 @@ def mobile(request, data=None):
         mobiles = Product.objects.filter(Q(sub_category='Smartphones') & Q(price__gt=10000))
     else:
         mobiles = Product.objects.filter(Q(sub_category='Smartphones') & Q(title=data))
-    return render(request, 'shop/smartphone.html', {'mobile': mobiles})
+    filter = data    
+    return render(request, 'shop/smartphone.html', {'mobile': mobiles, filter: 'active'})
 
 
-def topwear(request, data=None):
-    if data == None:
+def topwear(request, data):
+    if data == 'all':
         topwear = Product.objects.filter(sub_category='Top Wear')
     elif data == 'below':
         topwear = Product.objects.filter(Q(sub_category='Top Wear') & Q(price__lte=400))
-    elif data == 'above':
+    else:
         topwear = Product.objects.filter(Q(sub_category='Top Wear') & Q(price__gt=400))
-    return render(request, 'shop/topwear.html', {'topwear': topwear})
+    filter = data
+    return render(request, 'shop/topwear.html', {'topwear': topwear, filter: 'active'})
 
 
-def bottomwear(request, data=None):
-    if data == None:
+def bottomwear(request, data):
+    if data == 'all':
         bottomwear = Product.objects.filter(sub_category='Bottom Wear')
     elif data == 'below':
         bottomwear = Product.objects.filter(Q(sub_category='Bottom Wear') & Q(price__lte=600))
-    elif data == 'above':
+    else:
         bottomwear = Product.objects.filter(Q(sub_category='Bottom Wear') & Q(price__gt=600))
-    return render(request, 'shop/bottomwear.html', {'bottomwear': bottomwear})
+    filter = data
+    return render(request, 'shop/bottomwear.html', {'bottomwear': bottomwear, filter: 'active'})
 
 
-def laptop(request, data=None):
-    if data == None:
+def laptop(request, data):
+    if data == 'all':
         laptops = Product.objects.filter(sub_category='Laptops')
     elif data == 'below':
         laptops = Product.objects.filter(Q(sub_category='Laptops') & Q(price__lte=30000))
@@ -55,7 +58,8 @@ def laptop(request, data=None):
         laptops = Product.objects.filter(Q(sub_category='Laptops') & Q(price__gt=30000))
     else:
         laptops = Product.objects.filter(Q(sub_category='Laptops') & Q(title=data))
-    return render(request, 'shop/laptop.html', {'laptop': laptops})
+    filter = data
+    return render(request, 'shop/laptop.html', {'laptop': laptops, filter: 'active'})
 
 
 def productdetail(request, id):
@@ -178,17 +182,19 @@ def search(request):
     return render(request, 'shop/search.html', {'allSearches': all, 'query': query})
 
 
-@login_required(login_url='sign_in')
 def add_to_cart(request, pk):
     current_user = request.user
     product = Product.objects.get(id=pk)
-    already_present = Cart.objects.filter(Q(user=current_user) & Q(product=product)).exists()
-    if not already_present:
-        Cart(user=current_user, product=product).save()
-        messages.success(request, 'Product added to Cart')
-    else:
-        messages.info(request, 'Already added in cart')
-    return redirect('cart')
+    if current_user.is_authenticated:
+        already_present = Cart.objects.filter(Q(user=current_user) & Q(product=product)).exists()
+        if not already_present:
+            Cart(user=current_user, product=product).save()
+            messages.success(request, 'Product added to Cart')
+        else:
+            messages.info(request, 'Already added in cart')
+        return redirect('cart')
+    messages.info(request, 'You need to sign in in order to add products to your cart.')
+    return redirect('sign_in')
 
 
 @login_required(login_url='sign_in')
@@ -256,11 +262,15 @@ def checkout_view(request):
         city = request.POST['city']
         state = request.POST['state']
         zcode = request.POST['zip_code']
-        Checkout(name=name, email=email, current_address=add1, permament_address=add2, phone_no=pno, city=city, state=state, zip_code=zcode).save()
 
-        list = [Serie(**item) for item in orders.values()]
-        Serie.objects.bulk_create(list)
-        Cart.objects.filter(user=current_user).delete()
+        if len(pno) != 10:
+            messages.error(request, 'Invalid Phone No.')
+            return redirect('checkout_view')
+        else:
+            Checkout(name=name, email=email, current_address=add1, permament_address=add2, phone_no=pno, city=city, state=state, zip_code=zcode).save()
+            list = [Serie(**item) for item in orders.values()]
+            Serie.objects.bulk_create(list)
+            Cart.objects.filter(user=current_user).delete()
 
         messages.success(request, 'Successfully Purchased')
         return redirect('order_view')
@@ -270,3 +280,4 @@ def checkout_view(request):
 
 def about(request):
     return render(request, 'shop/about.html')
+    
