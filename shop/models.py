@@ -1,3 +1,4 @@
+from shop.city import *
 from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
@@ -82,7 +83,7 @@ class Checkout(models.Model):
     permament_address = models.CharField(max_length=200)
     phone_no = models.IntegerField()
     state = models.CharField(max_length=27, choices=StateChoices.choices)
-    city = models.CharField(max_length=30)
+    city = models.CharField(max_length=30, choices=cities)
     zip_code = models.IntegerField()
 
     def __str__(self):
