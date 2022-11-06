@@ -10,7 +10,7 @@ class Product(models.Model):
     sub_category = models.CharField(max_length=20)
     desc = models.TextField()
     price = models.IntegerField()
-    pub_date = models.DateTimeField()
+    pub_date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='shop/images')
 
     def __str__(self):
@@ -108,6 +108,9 @@ class Serie(models.Model):     # aka Order model
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField(default=1)
     date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']
 
     def __str__(self):
         return self.date

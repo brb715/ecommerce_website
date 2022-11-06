@@ -8,7 +8,7 @@ The purpose of e-commerce website is to help customers to purchase the various p
 - User can add products to cart by clicking on add to cart and increment and decrement the products using the plus-minus button and clear cart. They can also use the remove item button to the remove the entire products from the cart.
 - In order to add products to cart, User need to register first and be logged in. Then Users can checkout products.
 - After registering and successful login, User will be directed to the Homepage where they can change their Profile and Password. They can also check their Orders and Logout. 
-- Users can also use the Search bar in order to search for a particular product faster.
+- Users can use the different filters and the Search bar in order to search for a particular product faster.
 - Every product have it's own product page.
 - About Us and Contact Us page with which Users can raise their issues. 
 
@@ -21,8 +21,7 @@ The purpose of e-commerce website is to help customers to purchase the various p
 - CSS
 - Bootstrap
 
-
-### Welcome Page
+### Home Page
 ![Alt text](shop/static/shop/images/ss/Home.jpeg?raw=true )
 
 ### Sign Up Page
@@ -57,4 +56,3 @@ The purpose of e-commerce website is to help customers to purchase the various p
 
 ### Contact Page
 ![Alt text](shop/static/shop/images/ss/Contact_Us.jpeg?raw=true )
-
