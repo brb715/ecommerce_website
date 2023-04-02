@@ -62,7 +62,8 @@ class contact(forms.ModelForm):
 class checkout(forms.ModelForm):
     class Meta:
         model = Checkout
-        fields = ['name', 'email', 'current_address', 'permament_address', 'phone_no', 'state', 'city', 'zip_code']
+        fields = ['name', 'email', 'current_address',
+                  'permament_address', 'phone_no', 'state', 'city', 'zip_code']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),

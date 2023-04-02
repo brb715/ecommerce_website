@@ -76,7 +76,6 @@ class Checkout(models.Model):
         Uttarakhand = "Uttarakhand"
         West_Bengal = "West Bengal"
 
-
     name = models.CharField(max_length=20)
     email = models.EmailField()
     current_address = models.CharField(max_length=200)
