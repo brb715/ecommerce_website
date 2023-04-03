@@ -14,5 +14,12 @@
             "src": "/(.*)",
             "dest": "ecommerece_website/wsgi.py"
         }
+    ],
+    "functions": [
+        {
+            "api/**/*.py": {
+                "excludeFiles": "**/*.html"
+            }
+        }
     ]
 }
