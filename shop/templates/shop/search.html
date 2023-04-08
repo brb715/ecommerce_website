@@ -3,36 +3,62 @@
 
 {% block main-content %}
 <div class="container my-5">
-  <h2><strong>Search Results:</strong></h2>
-   {% if query|length < 1 %}
-    <p>No query requested.</p>
-   {% elif query|length > 77 %}
-    <p>Very long search not allowed. Try different keywords.</p>
-   {% elif allSearches|length < 1 %}
-    <p>No search results. <br>
-    Your search query : <b>{{query}}</b> did not match any documents. <br>
-    Suggestions:
-    <ul>
-    <li>Make sure that all words are spelled correctly.</li>
-    <li>Try more general keywords.</li>
-    <li>Try fewer keywords.</li>
-    <li>Try different keywords.</li>
-    </ul>
-    </p>
-    {% else %}
-    <div class="row">
-        {% for i in allSearches %}
-         <div class="col-sm-4 text-center mb-4">
-          <a href="{% url 'productdetail' i.id %}" class="">
-           <div class="item">
-            <img src="{{i.image.url}}" alt="" width="280" class="">
-            <div class="fw-bold">{{i.title}}</div>
-            <div class="fw-bold">Rs. {{i.price}}</div>
-           </div>
-          </a>
-         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+    <h2><strong>Search Results:</strong></h2>
+    {% if query|length < 1 %} <p>No query requested.</p>
+        {% elif query|length > 77 %}
+        <p>Very long search not allowed. Try different keywords.</p>
+        {% elif allSearches|length < 1 %} <p>No search results. <br>
+            Your search query : <b>{{query}}</b> did not match any documents. <br>
+            Suggestions:
+            <ul>
+                <li>Make sure that all words are spelled correctly.</li>
+                <li>Try more general keywords.</li>
+                <li>Try fewer keywords.</li>
+                <li>Try different keywords.</li>
+            </ul>
+            </p>
+            {% else %}
+            <div class="row">
+                {% for i in allSearches %}
+                <div class="col-sm-4 text-center mb-4">
+                    <a href="{% url 'productdetail' i.id %}" class="">
+                        <div class="item">
+                            <img src="{{i.image.url}}" alt="" width="280" class="">
+                            <div class="fw-bold">{{i.title}}</div>
+                            <div class="fw-bold">Rs. {{i.price}}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if allSearches.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'search' %}?search={{query}}&page=1"> &laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{% url 'search' %}?search={{query}}&page={{allSearches.previous_page_number}}">Previous</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'search' %}?search={{query}}&page={{allSearches.number}}">Page
+                            {{allSearches.number}} of {{allSearches.paginator.num_pages }}</a>
+                    </li>
+                    {% if allSearches.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{% url 'search' %}?search={{query}}&page={{allSearches.next_page_number}}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{% url 'search' %}?search={{query}}&page={{allSearches.paginator.num_pages}}">Last
+                            &raquo; </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
 </div>
 {% endblock main-content %}
